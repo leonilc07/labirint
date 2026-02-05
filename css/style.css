@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -6,16 +6,32 @@
 
 body {
     background: #2c2c2c;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+}
+
+.central {
+    display: flex;
+    flex-direction: column;
+    height: 57%;
+}
+
+.maze-container {
+    position: relative;
 }
 
 svg {
     background: rgb(0, 0, 0);
 }
 
+#characterCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
 
 .draw-line {
     stroke-dasharray: 1;
@@ -29,33 +45,47 @@ svg {
     }
 }
 
+#character {
+    fill: #3CB043;
+}
+
+.crowd-container {
+    position: relative;
+    width: 100%;
+    height: 20%;
+    bottom: 0;
+}
+
 .crowd {
-	position: absolute;
-	width: 50%;
-	height: 100px;
-	bottom: 0;
+    position: absolute;
+    width: 80%;
+    height: 50%;
+    bottom: 0;
+    left: 10%;
     overflow: hidden;
 }
 
 
 .crowd img {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	animation: jump 1s infinite;/*kateri key frame naj opravi, cas za ga opravit, kolikokrat*/
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    animation: jump 1s infinite;
+    /*kateri key frame naj opravi, cas za ga opravit, kolikokrat*/
     height: auto;
     width: 50px;
 }
 
-.crowd .navijacO{
+.crowd .navijacO {
     width: 10px;
 }
 
-.crowd-left, .crowd-right {
+.crowd-left,
+.crowd-right {
     position: absolute;
-    bottom: 100px;
-    width: 200px;
-    height: 100px;
+    bottom: 50%;
+    width: 30%;
+    height: 50%;
     overflow: hidden;
 }
 
@@ -69,7 +99,8 @@ svg {
     transform: translateX(100%);
 }
 
-.crowd-left img, .crowd-right img {
+.crowd-left img,
+.crowd-right img {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -78,24 +109,35 @@ svg {
     width: 30px;
 }
 
-.crowd-left .navijacO, .crowd-right .navijacO {
+.crowd-left .navijacO,
+.crowd-right .navijacO {
     width: 10px;
 }
 
 @keyframes jump {
-	0%, 100% {
-		transform: translateY(20px);/*zacetni polozaj*/
-	}
-	50% {
-		transform: translateY(-20px);/*drugi polozaj*/
-	}
+
+    0%,
+    100% {
+        transform: translateY(20px);
+        /*zacetni polozaj*/
+    }
+
+    50% {
+        transform: translateY(-20px);
+        /*drugi polozaj*/
+    }
 }
 
 @keyframes jump-sides {
-	0%, 100% {
-		transform: translateY(0px);/*zacetni polozaj*/
-	}
-	50% {
-		transform: translateY(-40px);/*drugi polozaj*/
-	}
+
+    0%,
+    100% {
+        transform: translateY(0px);
+        /*zacetni polozaj*/
+    }
+
+    50% {
+        transform: translateY(-40px);
+        /*drugi polozaj*/
+    }
 }
