@@ -1,14 +1,85 @@
 <!DOCTYPE html>
 
 <head>
-  <title>Labirint</title>
+  <title>Speed Mouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+  <h1 class="game-title" onclick="Swal.fire({
+    title: '<span style=\'font-family:Orbitron,sans-serif;color:#3CB043\'>Kako igrati?</span>',
+    html: `
+      <div style='text-align:left;font-family:Share Tech Mono,monospace;color:#ccc;line-height:1.8'>
+        <p style='margin-bottom:10px;color:#7ecf82;letter-spacing:1px;text-transform:uppercase;font-size:0.75rem'>Cilj igre</p>
+        <p>Pripelji miško skozi labirint v najhitrejšem možnem času!</p>
+        <hr style='border-color:#3CB04333;margin:12px 0'>
+        <p style='margin-bottom:10px;color:#7ecf82;letter-spacing:1px;text-transform:uppercase;font-size:0.75rem'>Upravljanje</p>
+        <p>&#8593; &#8595; &#8592; &#8594; &nbsp;&nbsp; ali &nbsp;&nbsp; W A S D</p>
+        <p style='font-size:0.85rem;color:#888;margin-top:4px'>Dve tipki hkrati = diagonalno gibanje</p>
+        <hr style='border-color:#3CB04333;margin:12px 0'>
+        <p style='margin-bottom:10px;color:#7ecf82;letter-spacing:1px;text-transform:uppercase;font-size:0.75rem'>Nastavitve</p>
+        <p>&#128260; <b style='color:#fff'>Velikost</b> &mdash; nastavi velikost miške</p>
+        <p>&#9889; <b style='color:#fff'>Hitrost</b> &mdash; nastavi hitrost miške</p>
+        <p style='font-size:0.85rem;color:#888;margin-top:4px'>Ko začneš se nastavitve zaključijo!</p>
+        <hr style='border-color:#3CB04333;margin:12px 0'>
+        <p style='margin-bottom:10px;color:#7ecf82;letter-spacing:1px;text-transform:uppercase;font-size:0.75rem'>Gumbi</p>
+        <p>&#9654; <b style='color:#e74c3c'>Pokaži</b> &mdash; razkrije rešitev labirinta</p>
+        <p>&#8635; <b style='color:#2e86c1'>Reset</b> &mdash; začni znova</p>
+        <hr style='border-color:#3CB04333;margin:12px 0'>
+        <p style='color:#FFD700;font-size:0.85rem'>&#127942; Doseži kar najboljši čas in zasedaj vrh lestvice!</p>
+      </div>
+    `,
+    background: '#0d0d18',
+    color: '#ccc',
+    confirmButtonText: 'Igraj!',
+    confirmButtonColor: '#3CB043',
+    width: '480px',
+    customClass: { popup: 'swal-game-popup' }
+  })"><span class="title-speed">Speed</span><span class="title-mouse">Mouse</span></h1>
+  <div class="side-panel">
+    <div class="panel-section">
+      <div class="panel-label">Rešitev</div>
+      <button id="btnResitev" onclick="window.toggleMazeSolution && window.toggleMazeSolution()">Rešitev</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-label">Velikost <span id="sizeVal">12</span></div>
+      <input type="range" id="sizeSlider" min="6" max="12" value="12" step="1" oninput="
+            const s = parseInt(this.value);
+            character.width = s;
+            character.height = s;
+            document.getElementById('sizeVal').textContent = s;
+          " />
+    </div>
+    <div class="panel-section">
+      <div class="panel-label">Hitrost <span id="speedVal">2</span></div>
+      <input type="range" id="speedSlider" min="1" max="6" value="2" step="0.5" oninput="
+            character.speed = parseFloat(this.value);
+            document.getElementById('speedVal').textContent = parseFloat(this.value).toFixed(1);
+          " />
+    </div>
+    <button id="btnReset" onclick="resetGame()">&#8635; Reset</button>
+  </div>
+  <div class="right-panel">
+    <div class="timer-block">
+      <div class="timer-label">&#9201; Čas</div>
+      <div class="timer-display" id="timerDisplay">00:00:00</div>
+    </div>
+    <div class="leaderboard">
+      <div class="leaderboard-title">&#127942; Najboljši časi</div>
+      <table id="leaderboardTable">
+        <thead><tr><th>#</th><th>Čas</th></tr></thead>
+        <tbody id="leaderboardBody"></tbody>
+      </table>
+    </div>
+  </div>
   <div class="central">
+
     <div class="maze-container">
-      <img src="/img/maze.svg">
+      <canvas id="mazeCanvas" width="804" height="484"></canvas>
       <canvas id="characterCanvas" width="804" height="484"></canvas>
     </div>
     <div class="crowd-container">
@@ -181,9 +252,8 @@
         <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
       </div>
     </div>
-  </div>
 </body>
-<script src="js/LineDraw.js"></script>
+<script src="js/MazeDraw.js"></script>
 <script src="js/script.js"></script>
 <script src="js/character.js"></script>
 
