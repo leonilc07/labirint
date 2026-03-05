@@ -59,7 +59,7 @@ body {
 /* ── Left panel ─────────────────────────────────────── */
 .side-panel {
     position: fixed;
-    left: 28px;
+    left: 8%;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -141,6 +141,26 @@ body {
 #btnReset:hover  { background: linear-gradient(135deg, #1a5276, #2e86c1); box-shadow: 0 0 16px #2e86c188; }
 #btnReset:active { transform: scale(0.96); }
 
+#btnNavodila {
+    padding: 12px 10px;
+    background: linear-gradient(135deg, #1a3a1a, #2a5e2a);
+    color: #7ecf82;
+    border: 1px solid #3CB04366;
+    border-radius: 7px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px #3CB04322;
+    margin-top: 4px;
+}
+
+#btnNavodila:hover  { background: linear-gradient(135deg, #2a5e2a, #3CB043); color: #fff; box-shadow: 0 0 16px #3CB04366; }
+#btnNavodila:active { transform: scale(0.96); }
+
 /* ── Sliders ─────────────────────────────────────────── */
 #sizeSlider,
 #speedSlider {
@@ -159,7 +179,7 @@ body {
 /* ── Right panel ─────────────────────────────────────── */
 .right-panel {
     position: fixed;
-    right: 28px;
+    right: 8%;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
