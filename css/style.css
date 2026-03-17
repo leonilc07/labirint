@@ -223,6 +223,49 @@ body {
     text-shadow: 0 0 16px #FFD70099;
 }
 
+.timer-display.timer-warning {
+    color: #FF8C00;
+    text-shadow: 0 0 16px #FF8C0099;
+}
+
+.timer-display.timer-danger {
+    color: #e74c3c;
+    text-shadow: 0 0 16px #e74c3c99;
+    animation: timer-pulse 0.45s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.65; transform: scale(1.05); }
+}
+
+/* ── Clocks counter ──────────────────────────────────────────── */
+.clocks-label {
+    color: #FFD700;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.clocks-display {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.15rem;
+    color: #FFD700;
+    letter-spacing: 3px;
+    text-align: center;
+    text-shadow: 0 0 8px #FFD70066;
+    padding: 4px 0;
+    border-bottom: 1px solid #FFD70033;
+    margin-bottom: 4px;
+    user-select: none;
+}
+
+.clocks-block {
+    border-top: 1px solid #FFD70022;
+    padding-top: 10px;
+}
+
 /* ── Leaderboard ─────────────────────────────────────── */
 .leaderboard-title {
     font-size: 0.65rem;
