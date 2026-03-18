@@ -21,20 +21,38 @@ let countdownBonusMs = 0;      // total bonus from collected clocks
 let clockPickups = [];
 
 // --- Leaderboard ---
-const leaderboardTimes = [];
+const LEADERBOARD_KEY = 'speedmouse_times';
 
-function addToLeaderboard(ms) {
-    leaderboardTimes.push(ms);
-    leaderboardTimes.sort((a, b) => a - b);
+function loadLeaderboardTimes() {
+    try {
+        return JSON.parse(localStorage.getItem(LEADERBOARD_KEY)) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveLeaderboardTimes(times) {
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(times));
+}
+
+function renderLeaderboard(times) {
     const tbody = document.getElementById('leaderboardBody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    leaderboardTimes.slice(0, 5).forEach((t, i) => {
+    times.slice(0, 5).forEach((t, i) => {
         const tr = document.createElement('tr');
         if (i === 0) tr.classList.add('lb-best');
         tr.innerHTML = `<td>${i + 1}</td><td>${formatTime(t)}</td>`;
         tbody.appendChild(tr);
     });
+}
+
+function addToLeaderboard(ms) {
+    const times = loadLeaderboardTimes();
+    times.push(ms);
+    times.sort((a, b) => a - b);
+    saveLeaderboardTimes(times);
+    renderLeaderboard(times);
 }
 
 function resetGame() {
@@ -62,6 +80,8 @@ function resetGame() {
     const sizeSlider  = document.getElementById('sizeSlider');
     const speedSlider = document.getElementById('speedSlider');
     if (sizeSlider)  { sizeSlider.value  = BASE_SIZE; sizeSlider.disabled  = false; }
+    const sizeValEl = document.getElementById('sizeVal');
+    if (sizeValEl) sizeValEl.textContent = BASE_SIZE;
     if (speedSlider) { speedSlider.value = 2;         speedSlider.disabled = false; character.speed = 2; }
 
     // Regenerate clock pickups
@@ -228,7 +248,7 @@ function updateTimerDisplay() {
     }
 }
 
-const BASE_SIZE = 12; // original character size in px
+const BASE_SIZE = 8; // original character size in px
 
 const character = {
     x: 394,
@@ -308,14 +328,24 @@ const character = {
         // Also check the center to prevent hopping over small islands
         if (this.isWall(newX + this.width / 2, newY + this.height / 2)) return false;
 
-        // Check the nose semicircle — it extends hh pixels beyond the front edge
-        // in the facing direction, so the rectangle checks alone miss it.
-        const newCx  = newX + this.width  / 2;
-        const newCy  = newY + this.height / 2;
+        // Check the nose semicircle at the candidate position
+        if (!this.noseIsClear(newX, newY)) return false;
+
+        return true;
+    },
+    // Returns true if the nose semicircle at position (posX, posY) is free of walls.
+    // Uses the current this.facing angle.
+    noseIsClear: function(posX, posY) {
+        if (!mazeImageData) return true;
+        if (posX + this.width <= 0 || posX >= canvas.width) return true;
+        if (posY + this.height <= 0 || posY >= canvas.height) return true;
+
+        const cx     = posX + this.width  / 2;
+        const cy     = posY + this.height / 2;
         const hw     = this.width  / 2;
         const hh     = this.height / 2;
-        const noseCx = newCx + hw * Math.cos(this.facing);
-        const noseCy = newCy + hw * Math.sin(this.facing);
+        const noseCx = cx + hw * Math.cos(this.facing);
+        const noseCy = cy + hw * Math.sin(this.facing);
         const arcSteps = 10;
         for (let i = 0; i <= arcSteps; i++) {
             const angle = (this.facing - Math.PI / 2) + (Math.PI / arcSteps) * i;
@@ -323,7 +353,6 @@ const character = {
             const ny = noseCy + hh * Math.sin(angle);
             if (this.isWall(nx, ny)) return false;
         }
-
         return true;
     },
     isWall: function(x, y) {
@@ -353,8 +382,14 @@ const character = {
         if (gameOver || timerFinished) return;
 
         // --- Update facing angle based on movement direction ---
+        // Only rotate if the nose won't clip a wall at the current position.
         if (dx !== 0 || dy !== 0) {
-            this.facing = Math.atan2(dy, dx);
+            const desiredFacing = Math.atan2(dy, dx);
+            const prevFacing = this.facing;
+            this.facing = desiredFacing;
+            if (!this.noseIsClear(this.x, this.y)) {
+                this.facing = prevFacing; // revert — nose would clip a wall
+            }
         }
 
         // --- Timer: start on first movement ---
@@ -531,6 +566,7 @@ function loadMazeCollisionData() {
 
 // Wait for page to load
 window.addEventListener('load', () => {
+    renderLeaderboard(loadLeaderboardTimes());
     character.draw();
     gameLoop();
     loadMazeCollisionData();

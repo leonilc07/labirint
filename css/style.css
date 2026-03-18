@@ -179,7 +179,7 @@ body {
 /* ── Right panel ─────────────────────────────────────── */
 .right-panel {
     position: fixed;
-    right: 8%;
+    right: 5%;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
