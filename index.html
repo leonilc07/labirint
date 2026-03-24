@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Speed Mouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <h1 class="game-title" onclick="showCredits()"><span class="title-speed">Speed</span><span class="title-mouse">Mouse</span></h1>
+  <div class="side-panel">
+    <div class="panel-section">
+      <div class="panel-label">Rešitev</div>
+      <button id="btnResitev" onclick="window.toggleMazeSolution && window.toggleMazeSolution()">Rešitev</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-label">Velikost <span id="sizeVal">8</span></div>
+      <input type="range" id="sizeSlider" min="6" max="8" value="8" step="1" oninput="
+            var s = parseInt(this.value);
+            charWidth = s;
+            charHeight = s;
+            document.getElementById('sizeVal').textContent = s;
+          " />
+    </div>
+    <div class="panel-section">
+      <div class="panel-label">Hitrost <span id="speedVal">2</span></div>
+      <input type="range" id="speedSlider" min="1" max="6" value="2" step="0.5" oninput="
+            charSpeed = parseFloat(this.value);
+            document.getElementById('speedVal').textContent = parseFloat(this.value).toFixed(1);
+          " />
+    </div>
+    <button id="btnReset" onclick="resetGame()">&#8635; Reset</button>
+    <button id="btnNavodila" onclick="showNavodila()">&#10067; Navodila</button>
+  </div>
+  <div class="right-panel">
+    <div class="timer-block">
+      <div class="timer-label">&#9201; Čas do konca</div>
+      <div class="timer-display" id="timerDisplay">01:00:00</div>
+    </div>
+    <div class="clocks-block">
+      <div class="clocks-label">&#128336; Clocks</div>
+      <div class="clocks-display" id="clocksDisplay">0 / 8</div>
+    </div>
+    <div class="leaderboard">
+      <div class="leaderboard-title">&#127942; Najboljši časi</div>
+      <table id="leaderboardTable">
+        <thead><tr><th>#</th><th>Čas</th></tr></thead>
+        <tbody id="leaderboardBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="central">
+
+    <div class="maze-container">
+      <canvas id="mazeCanvas" width="804" height="484"></canvas>
+      <canvas id="characterCanvas" width="804" height="484"></canvas>
+    </div>
+    <div class="crowd-container">
+      <div class="crowd">
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+
+      </div>
+      <div class="crowd-left">
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+
+      </div>
+      <div class="crowd-right">
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijac.svg" alt="crowd person" />
+        <img src="img/navijacO.svg" class="navijacO" alt="crowd person" />
+      </div>
+    </div>
+</body>
+<script src="js/dialogs.js"></script>
+<script src="js/MazeDraw.js"></script>
+<script src="js/script.js"></script>
+<script src="js/character.js"></script>
+
+</html>
